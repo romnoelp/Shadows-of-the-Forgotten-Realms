@@ -8,16 +8,24 @@ namespace romnoelp
     {
         private Rigidbody2D rb;
         private BoxCollider2D playerBoxcastCollider;
-        [SerializeField] private LayerMask ground;
+        public ParticleSystem movementTrailDust;
         private float horizontalMovement;
-        [SerializeField] private float movementSpeed = 4f;
-        [SerializeField] private float jumpForce;
         private bool isJumping;
-        [SerializeField] private float coyoteTime = .2f;
         private float coyoteTimeCounter;
-        [SerializeField] private float jumpBufferTime = .2f;
         private float jumpBufferCounter; 
         private bool isFacingRight = true;
+        private bool canDash = true;
+        private bool isDashing;
+        [SerializeField] private LayerMask ground;
+        [SerializeField] private TrailRenderer trailRenderer;
+        [SerializeField] private float dashForce = 24f;
+        [SerializeField] private float jumpForce = 5f;
+        [SerializeField] private float dashingTime = 0.2f;
+        [SerializeField] private float dashingCooldown = 1f;
+        [SerializeField] private float movementSpeed = 4f;
+        [SerializeField] private float coyoteTime = .2f;
+        [SerializeField] private float jumpBufferTime = .2f;
+        [SerializeField] private float jumpCooldown = .4f;
 
         void Start()
         {
@@ -29,11 +37,17 @@ namespace romnoelp
         {
             horizontalMovement = Input.GetAxisRaw("Horizontal");
             
+            if (isDashing)
+            {
+                return; // -> If the player is indeed dashing, this condition will just return and make it s othat the player 
+                        //    can't make any movements aside from the dash
+            }
+
+            // Jumping stuff
             // Coyote timer (Coyote -> The amount of time the player can press space after leaving the ground)
             if (IsGrounded()) 
             {
                 coyoteTimeCounter = coyoteTime;
-                Debug.Log("Grounded");
             }
             else
             {
@@ -42,6 +56,7 @@ namespace romnoelp
 
             if(Input.GetButtonDown("Jump"))
             {
+                CreateTrailDust();
                 jumpBufferCounter = jumpBufferTime;
             }
             else
@@ -49,10 +64,11 @@ namespace romnoelp
                 jumpBufferCounter -= Time.deltaTime;
             }
 
-            if (coyoteTimeCounter > 0f && jumpBufferCounter > 0f)
+            if (coyoteTimeCounter > 0f && jumpBufferCounter > 0f && !isJumping)
             {
                 rb.velocity = new Vector2(rb.velocity.x,  jumpForce);
                 jumpBufferCounter = 0f;
+                StartCoroutine(JumpCooldown());
             }
 
             if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
@@ -60,12 +76,24 @@ namespace romnoelp
                 rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * .5f);
                 coyoteTimeCounter = 0f;
             }
-        }
 
+            // Dashing stuff 
+            if (Input.GetKeyDown(KeyCode.LeftShift) && canDash)
+            {
+                StartCoroutine(Dash());
+            }
+
+            Flip();
+        }
 
         // Physics for the movement
         private void FixedUpdate()
         {
+            if (isDashing)
+            {
+                return;
+            }
+
             rb.velocity = new Vector2(horizontalMovement * movementSpeed, rb.velocity.y);
         }
 
@@ -80,15 +108,41 @@ namespace romnoelp
         {
             if (isFacingRight && horizontalMovement < 0f || !isFacingRight && horizontalMovement > 0f)
             {
+                CreateTrailDust();
                 Vector3 localScale = transform.localScale;
                 isFacingRight = !isFacingRight;
                 localScale.x *= -1f;
                 transform.localScale = localScale;
             }
         }
-    }
 
-    // To do : Fix the rigid body and the controller because the player sticks to side surfaces when it jumps 
-    
+        private void CreateTrailDust() 
+        {
+            movementTrailDust.Play();
+        }
+
+        private IEnumerator JumpCooldown()
+        {
+            isJumping = true;
+            yield return new WaitForSeconds(jumpCooldown);
+            isJumping = false;
+        }
+
+        private IEnumerator Dash()
+        {
+            canDash = false;
+            isDashing = true;
+            float originalGravity = rb.gravityScale;
+            rb.gravityScale = 0f;
+            rb.velocity = new Vector2(transform.localScale.x * dashForce, 0f);
+            trailRenderer.emitting = true;
+            yield return new WaitForSeconds(dashingTime);
+            trailRenderer.emitting = false;
+            rb.gravityScale = originalGravity;
+            isDashing = false;
+            yield return new WaitForSeconds(dashingCooldown);
+            canDash = true;
+        }
+    }    
 }
 
