@@ -1097,8 +1097,8 @@ GameObject:
   - component: {fileID: 1452850656}
   - component: {fileID: 1452850655}
   - component: {fileID: 1452850659}
-  - component: {fileID: 1452850658}
   - component: {fileID: 1452850660}
+  - component: {fileID: 1452850658}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -1239,11 +1239,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   trailRenderer: {fileID: 1452850660}
-  dashingPower: 24
+  dashForce: 24
+  jumpForce: 5
   dashingTime: 0.2
   dashingCooldown: 1
   movementSpeed: 4
-  jumpForce: 5
   coyoteTime: 0.2
   jumpBufferTime: 0.2
   jumpCooldown: 0.4

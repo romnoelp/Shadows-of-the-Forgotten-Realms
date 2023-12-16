@@ -8,7 +8,6 @@ namespace romnoelp
     {
         private Rigidbody2D rb;
         private BoxCollider2D playerBoxcastCollider;
-        public ParticleSystem movementTrailDust;
         private float horizontalMovement;
         private bool isJumping;
         private float coyoteTimeCounter;
@@ -16,16 +15,23 @@ namespace romnoelp
         private bool isFacingRight = true;
         private bool canDash = true;
         private bool isDashing;
-        [SerializeField] private LayerMask ground;
-        [SerializeField] private TrailRenderer trailRenderer;
-        [SerializeField] private float dashForce = 24f;
-        [SerializeField] private float jumpForce = 5f;
-        [SerializeField] private float dashingTime = 0.2f;
-        [SerializeField] private float dashingCooldown = 1f;
+
+        [Header ("Movement")]
+        [SerializeField] private ParticleSystem movementTrailDust;
         [SerializeField] private float movementSpeed = 4f;
+        
+        [Header ("Jump")]
+        [SerializeField] private float jumpForce = 5f;
         [SerializeField] private float coyoteTime = .2f;
         [SerializeField] private float jumpBufferTime = .2f;
         [SerializeField] private float jumpCooldown = .4f;
+        [SerializeField] private LayerMask ground;
+
+        [Header ("Dashing")]
+        [SerializeField] private TrailRenderer trailRenderer;
+        [SerializeField] private float dashForce = 24f;
+        [SerializeField] private float dashingTime = 0.2f;
+        [SerializeField] private float dashingCooldown = 1f;
 
         void Start()
         {
