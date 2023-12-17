@@ -7,7 +7,9 @@ public class Kiben : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        transform
+        transform;
+        for(int i = 1; i<0; i--);
+        
     }
 
     // Update is called once per frame
