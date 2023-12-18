@@ -1538,7 +1538,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementTrailDust: {fileID: 2038722127}
   movementSpeed: 5
-  jumpForce: 7
+  jumpForce: 3.5
   coyoteTime: 0.2
   jumpBufferTime: 0.2
   jumpCooldown: 0.4

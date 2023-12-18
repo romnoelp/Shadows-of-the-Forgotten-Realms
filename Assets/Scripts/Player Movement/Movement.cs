@@ -76,7 +76,7 @@ namespace romnoelp
 
             if (coyoteTimeCounter > 0f && jumpBufferCounter > 0f && !isJumping)
             {
-                rb.velocity = new Vector2(rb.velocity.x,  jumpForce);
+                rb.velocity = new Vector2(rb.velocity.x,  jumpForce * 1.5f);
                 jumpBufferCounter = 0f;
                 StartCoroutine(JumpCooldown());
             }
