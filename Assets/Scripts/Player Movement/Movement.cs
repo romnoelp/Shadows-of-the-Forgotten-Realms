@@ -15,6 +15,7 @@ namespace romnoelp
         private bool isFacingRight = true;
         private bool canDash = true;
         private bool isDashing;
+        private bool reachedJumpPeak = false;
 
         [Header ("Movement")]
         [SerializeField] private ParticleSystem movementTrailDust;
@@ -25,6 +26,7 @@ namespace romnoelp
         [SerializeField] private float coyoteTime = .2f;
         [SerializeField] private float jumpBufferTime = .2f;
         [SerializeField] private float jumpCooldown = .4f;
+        [SerializeField] private float fallSpeed = 2f;
         [SerializeField] private LayerMask ground;
 
         [Header ("Dashing")]
@@ -42,6 +44,8 @@ namespace romnoelp
         private void Update() 
         {
             horizontalMovement = Input.GetAxisRaw("Horizontal");
+
+            
             
             if (isDashing)
             {
@@ -77,6 +81,12 @@ namespace romnoelp
                 StartCoroutine(JumpCooldown());
             }
 
+            if (rb.velocity.y <= 0f && !reachedJumpPeak && !isJumping)
+            {
+                reachedJumpPeak = true;
+                StartCoroutine(IncreaseFallSpeed());
+            }
+
             if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
             {
                 rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * .5f);
@@ -90,6 +100,7 @@ namespace romnoelp
             }
 
             Flip();
+            Debug.Log(rb.velocity.y);
         }
 
         // Physics for the movement
@@ -148,6 +159,17 @@ namespace romnoelp
             isDashing = false;
             yield return new WaitForSeconds(dashingCooldown);
             canDash = true;
+        }
+
+        private IEnumerator IncreaseFallSpeed()
+        {
+            while (rb.velocity.y < 0f)
+            {
+                rb.velocity += Vector2.up * Physics2D.gravity.y * (fallSpeed - 1) * Time.deltaTime;
+                yield return null;
+            }
+            
+            reachedJumpPeak = false;
         }
     }    
 }
