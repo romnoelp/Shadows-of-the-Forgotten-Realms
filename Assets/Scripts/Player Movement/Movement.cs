@@ -110,7 +110,7 @@ namespace romnoelp
             }
 
             // Dashing stuff 
-            if (Input.GetKeyDown(KeyCode.LeftShift) && canDash)
+            if (Input.GetKey(KeyCode.LeftShift) && canDash)
             {
                 StartCoroutine(Dash());
             }
@@ -187,7 +187,7 @@ namespace romnoelp
             float originalGravity = rb.gravityScale;
             rb.gravityScale = 0f;
 
-            float dashDirection = Input.GetAxisRaw("Horizontal");
+            float dashDirection = isFacingRight ? 1f : -1f; // Use isFacingRight to determine the direction
             rb.velocity = new Vector2(dashDirection * dashForce, 0f);
 
             trailRenderer.emitting = true;
