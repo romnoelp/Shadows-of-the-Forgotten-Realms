@@ -12,10 +12,11 @@ namespace romnoelp
         private bool isJumping;
         private float coyoteTimeCounter;
         private float jumpBufferCounter; 
-        private bool isFacingRight = true;
+        public bool isFacingRight = true;
         private bool canDash = true;
         private bool isDashing;
         private bool reachedJumpPeak = false;
+        private DirectionBias directionBias;
 
         [Header ("Movement")]
         [SerializeField] private ParticleSystem movementTrailDust;
@@ -35,10 +36,14 @@ namespace romnoelp
         [SerializeField] private float dashingTime = 0.2f;
         [SerializeField] private float dashingCooldown = 1f;
 
+        [Header ("Camera Stuff")]
+        [SerializeField] private GameObject cameraFollowObject;
+
         void Start()
         {
             rb = GetComponent<Rigidbody2D>();
             playerBoxcastCollider = GetComponent<BoxCollider2D>();
+            directionBias = cameraFollowObject.GetComponent<DirectionBias>();
         }
 
         private void Update() 
@@ -98,14 +103,13 @@ namespace romnoelp
             {
                 StartCoroutine(Dash());
             }
-
-            Flip();
-            Debug.Log(rb.velocity.y);
         }
 
         // Physics for the movement
         private void FixedUpdate()
         {
+            FlipCheck();
+
             if (isDashing)
             {
                 return;
@@ -123,13 +127,33 @@ namespace romnoelp
         // Flips the character when the horizontal movement becomes negative (Note: On a plane, negative <---- 0 ----> positive)
         private void Flip()
         {
-            if (isFacingRight && horizontalMovement < 0f || !isFacingRight && horizontalMovement > 0f)
+            if (isFacingRight)
             {
                 CreateTrailDust();
-                Vector3 localScale = transform.localScale;
+                Vector3 rotator = new Vector3(transform.rotation.x, 180f, transform.rotation.z);
+                transform.rotation = Quaternion.Euler(rotator);
                 isFacingRight = !isFacingRight;
-                localScale.x *= -1f;
-                transform.localScale = localScale;
+                directionBias.CallTurn();
+            }
+            else
+            {
+                CreateTrailDust();
+                Vector3 rotator = new Vector3(transform.rotation.x, 0f, transform.rotation.z);
+                transform.rotation = Quaternion.Euler(rotator);
+                isFacingRight = !isFacingRight;
+                directionBias.CallTurn();
+            }
+        }
+
+        private void FlipCheck()
+        {
+            if (horizontalMovement > 0f && !isFacingRight)
+            {
+                Flip();
+            }
+            else if (horizontalMovement < 0f && isFacingRight)
+            {
+                Flip();
             }
         }
 
@@ -151,12 +175,17 @@ namespace romnoelp
             isDashing = true;
             float originalGravity = rb.gravityScale;
             rb.gravityScale = 0f;
-            rb.velocity = new Vector2(transform.localScale.x * dashForce, 0f);
+
+            float dashDirection = Input.GetAxisRaw("Horizontal");
+            rb.velocity = new Vector2(dashDirection * dashForce, 0f);
+
             trailRenderer.emitting = true;
             yield return new WaitForSeconds(dashingTime);
             trailRenderer.emitting = false;
+
             rb.gravityScale = originalGravity;
             isDashing = false;
+
             yield return new WaitForSeconds(dashingCooldown);
             canDash = true;
         }
