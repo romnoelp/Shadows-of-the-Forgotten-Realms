@@ -417,7 +417,7 @@ Transform:
   m_GameObject: {fileID: 400181442}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 12.33, y: 32.42, z: 0}
+  m_LocalPosition: {x: 11.96, y: 31.46, z: 0}
   m_LocalScale: {x: 5.34875, y: 0.3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -843,7 +843,7 @@ GameObject:
   - component: {fileID: 638349272}
   - component: {fileID: 638349271}
   m_Layer: 0
-  m_Name: Camera Tracker
+  m_Name: (Player Camera) Horizontal Movement Smoothing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1035,7 +1035,7 @@ GameObject:
   - component: {fileID: 992350529}
   - component: {fileID: 992350528}
   m_Layer: 0
-  m_Name: 2D Camera
+  m_Name: Player Follow Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1075,7 +1075,7 @@ MonoBehaviour:
   m_Follow: {fileID: 638349272}
   m_Lens:
     FieldOfView: 34
-    OrthographicSize: 7
+    OrthographicSize: 8
     NearClipPlane: 0.3
     FarClipPlane: 1000
     Dutch: 0
@@ -1415,6 +1415,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1354201183}
+  - component: {fileID: 1354201184}
   m_Layer: 0
   m_Name: Camera Stuff
   m_TagString: Untagged
@@ -1440,6 +1441,23 @@ Transform:
   - {fileID: 638349272}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1354201184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1354201182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfc4b5300ac78c94bac241ae49c7bf46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  virtualCameras:
+  - {fileID: 992350529}
+  fallPanAmount: 0.25
+  fallPanTime: 0.35
+  fallSpeedYDampingChangeThreshold: -15
 --- !u!1 &1397998909
 GameObject:
   m_ObjectHideFlags: 0
@@ -1519,7 +1537,7 @@ Transform:
   m_GameObject: {fileID: 1397998909}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 18.19, y: 36.67, z: 0}
+  m_LocalPosition: {x: 21.67, y: 37.66, z: 0}
   m_LocalScale: {x: 2.6200752, y: 0.94987273, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1696,7 +1714,7 @@ Transform:
   m_GameObject: {fileID: 1452850654}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 12, y: 34, z: 0}
+  m_LocalPosition: {x: 12, y: 32.52, z: 0}
   m_LocalScale: {x: 0.64645, y: 0.64645, z: 0.64645}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1749,7 +1767,7 @@ MonoBehaviour:
   isFacingRight: 1
   movementTrailDust: {fileID: 2038722127}
   movementSpeed: 5
-  jumpForce: 3.5
+  jumpForce: 5
   coyoteTime: 0.2
   jumpBufferTime: 0.2
   jumpCooldown: 0.4
@@ -1841,7 +1859,7 @@ Transform:
   m_GameObject: {fileID: 1819452664}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 20.51, y: 32.46, z: 0}
+  m_LocalPosition: {x: 20.59, y: 32.46, z: 0}
   m_LocalScale: {x: 6.4377, y: 1.1318, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1971,7 +1989,7 @@ Transform:
   m_GameObject: {fileID: 1891527590}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 24.9, y: 34.84, z: 0}
+  m_LocalPosition: {x: 26.83, y: 35.32, z: 0}
   m_LocalScale: {x: 2.680658, y: 1.0711355, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

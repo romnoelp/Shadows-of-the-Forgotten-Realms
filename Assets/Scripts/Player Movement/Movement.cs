@@ -38,19 +38,29 @@ namespace romnoelp
 
         [Header ("Camera Stuff")]
         [SerializeField] private GameObject cameraFollowObject;
+        private float fallSpeedYDampingThreshold;
 
         void Start()
         {
             rb = GetComponent<Rigidbody2D>();
             playerBoxcastCollider = GetComponent<BoxCollider2D>();
             directionBias = cameraFollowObject.GetComponent<DirectionBias>();
+            fallSpeedYDampingThreshold = Manager.instance.fallSpeedYDampingChangeThreshold;
         }
 
         private void Update() 
         {
             horizontalMovement = Input.GetAxisRaw("Horizontal");
 
-            
+            if (rb.velocity.y < fallSpeedYDampingThreshold && Manager.instance.isLerpingYDamping && 
+            !Manager.instance.LerpedFromPlayerFalling)
+            {
+                Manager.instance.LerpYDamping(true);
+            }
+            if (rb.velocity.y >= 0f && !Manager.instance.isLerpingYDamping && Manager.instance.LerpedFromPlayerFalling)
+            {
+                Manager.instance.LerpedFromPlayerFalling = false;
+            }
             
             if (isDashing)
             {
