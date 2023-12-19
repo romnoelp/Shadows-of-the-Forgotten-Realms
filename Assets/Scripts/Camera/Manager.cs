@@ -55,7 +55,8 @@ namespace romnoelp
                 endDampAmount = fallPanAmount;
                 LerpedFromPlayerFalling = true;
             }
-            else{
+            else
+            {
                 endDampAmount = normalYPanAmount;
             }
             
@@ -64,6 +65,7 @@ namespace romnoelp
             {
                 elapsedTime = elapsedTime + Time.deltaTime;
                 float lerpedPanAmount = Mathf.Lerp(startDampAmount, endDampAmount, (elapsedTime / fallPanTime));
+                framingTransposer.m_YDamping = lerpedPanAmount;
                 yield return null;
             }
             isLerpingYDamping = false;

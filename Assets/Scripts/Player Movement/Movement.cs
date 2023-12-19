@@ -52,7 +52,7 @@ namespace romnoelp
         {
             horizontalMovement = Input.GetAxisRaw("Horizontal");
 
-            if (rb.velocity.y < fallSpeedYDampingThreshold && Manager.instance.isLerpingYDamping && 
+            if (rb.velocity.y < fallSpeedYDampingThreshold && !Manager.instance.isLerpingYDamping && 
             !Manager.instance.LerpedFromPlayerFalling)
             {
                 Manager.instance.LerpYDamping(true);
@@ -60,6 +60,7 @@ namespace romnoelp
             if (rb.velocity.y >= 0f && !Manager.instance.isLerpingYDamping && Manager.instance.LerpedFromPlayerFalling)
             {
                 Manager.instance.LerpedFromPlayerFalling = false;
+                Manager.instance.LerpYDamping(false);
             }
             
             if (isDashing)
