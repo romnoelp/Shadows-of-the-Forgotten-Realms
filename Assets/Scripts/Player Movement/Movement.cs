@@ -9,12 +9,10 @@ namespace romnoelp
         private Rigidbody2D rigidbody2D;
         public Rigidbody2D rb 
         {
-            get{return rb;}
-            private set {rb = value;}
+            get { return rigidbody2D; }
+            private set { rigidbody2D = value; }
         }
-        private BoxCollider2D playerBoxcastCollider;
-        private float horizontalMovement;
-         
+        private float horizontalMovement;        
         public bool isFacingRight = true;
         private bool canDash = true;
         private bool isDashing;
@@ -23,21 +21,13 @@ namespace romnoelp
 
         [Header ("Movement")]
         [SerializeField] private float movementSpeed = 4f;
-        
-        [Header ("Dashing")]
-        [SerializeField] private TrailRenderer trailRenderer;
-        [SerializeField] private float dashForce = 24f;
-        [SerializeField] private float dashingTime = 0.2f;
-        [SerializeField] private float dashingCooldown = 1f;
-
         [Header ("Camera Stuff")]
         [SerializeField] private GameObject cameraFollowObject;
         private float fallSpeedYDampingThreshold;
 
         void Start()
         {
-            rigidbody2D = GetComponent<Rigidbody2D>();
-            playerBoxcastCollider = GetComponent<BoxCollider2D>();
+            rb = GetComponent<Rigidbody2D>();
             directionBias = cameraFollowObject.GetComponent<DirectionBias>();
             fallSpeedYDampingThreshold = Manager.instance.fallSpeedYDampingChangeThreshold;
         }
@@ -46,12 +36,12 @@ namespace romnoelp
         {
             horizontalMovement = Input.GetAxisRaw("Horizontal");
 
-            if (rigidbody2D.velocity.y < fallSpeedYDampingThreshold && !Manager.instance.isLerpingYDamping && 
+            if (rb.velocity.y < fallSpeedYDampingThreshold && !Manager.instance.isLerpingYDamping && 
             !Manager.instance.LerpedFromPlayerFalling)
             {
                 Manager.instance.LerpYDamping(true);
             }
-            if (rigidbody2D.velocity.y >= 0f && !Manager.instance.isLerpingYDamping && Manager.instance.LerpedFromPlayerFalling)
+            if (rb.velocity.y >= 0f && !Manager.instance.isLerpingYDamping && Manager.instance.LerpedFromPlayerFalling)
             {
                 Manager.instance.LerpedFromPlayerFalling = false;
                 Manager.instance.LerpYDamping(false);
@@ -68,10 +58,7 @@ namespace romnoelp
             
 
             // Dashing stuff 
-            if (Input.GetKey(KeyCode.LeftShift) && canDash)
-            {
-                StartCoroutine(Dash());
-            }
+            
         }
 
         // Physics for the movement
@@ -84,7 +71,7 @@ namespace romnoelp
                 return;
             }
 
-            rigidbody2D.velocity = new Vector2(horizontalMovement * movementSpeed, rigidbody2D.velocity.y);
+            rb.velocity = new Vector2(horizontalMovement * movementSpeed, rb.velocity.y);
         }
 
         // Creates a box cast, a collider below the player, and will return true if it detects a collision between the specified layer 
@@ -122,27 +109,6 @@ namespace romnoelp
         }
         
   
-
-        private IEnumerator Dash()
-        {
-            canDash = false;
-            isDashing = true;
-            float originalGravity = rigidbody2D.gravityScale;
-            rigidbody2D.gravityScale = 0f;
-
-            float dashDirection = isFacingRight ? 1f : -1f; // Use isFacingRight to determine the direction
-            rigidbody2D.velocity = new Vector2(dashDirection * dashForce, 0f);
-
-            trailRenderer.emitting = true;
-            yield return new WaitForSeconds(dashingTime);
-            trailRenderer.emitting = false;
-
-            rigidbody2D.gravityScale = originalGravity;
-            isDashing = false;
-
-            yield return new WaitForSeconds(dashingCooldown);
-            canDash = true;
-        }
 
         
     }    

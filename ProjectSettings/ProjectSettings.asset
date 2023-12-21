@@ -4,7 +4,7 @@
 PlayerSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 26
-  productGUID: 97dfa7ae0293267409eb08e540d08d14
+  productGUID: 673860d83c43b8d4a8ecafcc0244d2f9
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
   AndroidEnableSustainedPerformanceMode: 0
@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: DefaultCompany
-  productName: Shadows of the Forgotten Realms
+  productName: Camera Test
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -591,14 +591,14 @@ PlayerSettings:
   apiCompatibilityLevelPerPlatform: {}
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: Shadows of the Forgotten Realms
+  metroPackageName: Camera Test
   metroPackageVersion: 
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
   metroCertificateIssuer: 
   metroCertificateNotAfter: 0000000000000000
-  metroApplicationDescription: Shadows of the Forgotten Realms
+  metroApplicationDescription: Camera Test
   wsaImages: {}
   metroTileShortName: 
   metroTileShowName: 0
@@ -666,10 +666,10 @@ PlayerSettings:
   apiCompatibilityLevel: 6
   activeInputHandler: 0
   windowsGamepadBackendHint: 0
-  cloudProjectId: 1c691711-4cd5-4143-bfd9-cbc883b421f6
+  cloudProjectId: a2f4319f-76eb-43a5-9c47-795c52c06e76
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: Shadows of the Forgotten Realms 2023-12-08_08-43-24
+  projectName: Camera Test
   organizationId: unity_9c4bc602747a0a3236bf
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0

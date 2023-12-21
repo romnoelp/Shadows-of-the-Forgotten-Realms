@@ -24,10 +24,10 @@ namespace romnoelp
 
 
         private void Start() {
+            movementScript = GetComponent<Movement>();
             rb = movementScript.rb;
-            movementScript = GetComponent<Movement>();    
+            playerBoxcastCollider = GetComponent<BoxCollider2D>();
         }
-
         private void Update() {
             if (IsGrounded()) 
             {
@@ -40,7 +40,7 @@ namespace romnoelp
 
             if(Input.GetButtonDown("Jump"))
             {
-                CreateTrailDust();
+                // CreateTrailDust();
                 jumpBufferCounter = jumpBufferTime;
             }
             else
@@ -89,11 +89,6 @@ namespace romnoelp
             }
             
             reachedJumpPeak = false;
-        }
-
-              private void CreateTrailDust() 
-        {
-            movementTrailDust.Play();
         }
         
     }
